@@ -9,7 +9,7 @@ Provided as [OpenAPI](https://en.wikipedia.org/wiki/OpenAPI_Specification) speci
 
 Templates specifies Geo Process API for a kind of process.
 
-Two classes of processing are definied :
+Two classes of processing are definied in the example folder:
 
 * Object detection
 * Change detection
@@ -21,17 +21,17 @@ Templates are provided as JSON schemas for the following endpoints:
 * Input of Geo Process API jobs endpoint
 * if no output of Geo Process API jobs endpoint, GeoJSON with a FeatureCollection is expected
 
-#### Object detection
+#### Exemple : Object detection
 
-* Describe endpoint schema : [tile-object-detection-describe.json](tile-object-detection-describe.json)
-* Config endpoint schema : [tile-object-detection-config.json](tile-object-detection-config.json)
-* Jobs endpoint input schema : [tile-object-detection-input.json](tile-object-detection-input.json)
+* Describe endpoint schema : [tile-object-detection-describe.json](examples/tile-object-detection-describe.json)
+* Config endpoint schema : [tile-object-detection-config.json](examples/tile-object-detection-config.json)
+* Jobs endpoint input schema : [tile-object-detection-input.json](examples/tile-object-detection-input.json)
 
-#### Change detection
+#### Exemple : Change detection
 
-* Describe endpoint schema : [tile-change-detection-describe.json](tile-change-detection-describe.json)
-* Config endpoint schema : [tile-change-detection-config.json](tile-change-detection-config.json)
-* Jobs endpoint input schema : [tile-change-detection-input.json](tile-change-detection-input.json)
+* Describe endpoint schema : [tile-change-detection-describe.json](examples/tile-change-detection-describe.json)
+* Config endpoint schema : [tile-change-detection-config.json](examples/tile-change-detection-config.json)
+* Jobs endpoint input schema : [tile-change-detection-input.json](examples/tile-change-detection-input.json)
 
 ## Geo Processes Management API
 
@@ -42,7 +42,7 @@ Provided as [OpenAPI](https://en.wikipedia.org/wiki/OpenAPI_Specification) speci
 
 As the API is generic to process several kind of processes, templates specifies Geo Processes Manager API job input for a kind of process.
 
-Two kinds of process are defined with there associated JSON schema for the jobs creation endpoint :
+For example, two kinds of process are defined with there associated JSON schema for the jobs creation endpoint :
 
-* Object detection : [job-object-detection-input.json](job-object-detection-input.json)
-* Change detection : [job-change-detection-input.json](job-change-detection-input.json)
+* Object detection : [job-object-detection-input.json](examples/job-object-detection-input.json)
+* Change detection : [job-change-detection-input.json](examples/job-change-detection-input.json)
