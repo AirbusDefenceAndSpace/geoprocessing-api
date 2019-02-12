@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.2
 
 #
 # Info
@@ -44,6 +44,9 @@ tags:
   - name: Jobs
     description: |
       Processes execution management.
+  - name: Admin
+    description: |
+      Processing engine management.
 
 #
 # Security
@@ -851,6 +854,66 @@ paths:
                 $ref: '#/components/schemas/Error'
         '404':
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  #
+  # Health informations
+  #
+  '/api/v1/health':
+    get:
+      tags:
+        - Admin
+      description: >-
+        Return the list of processing engine health insights.
+      responses:
+        '200':
+          description: Get health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResource'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  #
+  # Health informations for process
+  #
+  '/api/v1/processes/{processId}/health':
+    get:
+      tags:
+        - Admin
+      description: >-
+        Processing engine health status for process dedicated ressources.
+      parameters:
+        - name: processId
+          in: path
+          description: process ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResource'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found
           content:
             application/json:
               schema:
@@ -1750,3 +1813,29 @@ components:
           description: Error timestamp.
           type: string
           example: 1522067885
+
+    #
+    # HealthResource schema
+    #
+    HealthResource:
+      description: |
+        Health status
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [green, yellow, red]
+          description: |
+             * `green` - Processing Engine is fine
+             * `yellow` - Processing Engine is overloaded
+             * `red` - Processing Engine is broken
+        numberOfJobsInProgress:
+          description: Number of jobs currently accepted and not finished yet.
+          type: integer
+          example: 123
+        numberOfTasksInProgress:
+          description: Number of tasks currently accepted and not finished yet.
+          type: integer
+          example: 123456
