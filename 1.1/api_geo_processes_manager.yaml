@@ -560,6 +560,70 @@ paths:
               $ref: '#/components/schemas/Input'
 
   #
+  # Job price for a given process
+  #
+  '/api/v1/processes/{processId}/_price':
+    post:
+      tags:
+        - Jobs
+      summary: Request for a job execution price
+      description: Make a job price request to evaluate execution cost
+      parameters:
+        - name: processId
+          in: path
+          description: ID of process to get input return
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Job cost estimation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostEstimationResource'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '405':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: |
+          Process input parameters as defined by the JSON Schema in the input
+          attribute of the description resource.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Input'
+
+  #
   # Job management
   #
   '/api/v1/processes/{processId}/jobs/{jobId}':
@@ -1527,6 +1591,35 @@ components:
           properties:
             _links:
               $ref: '#/components/schemas/JobLinks'
+
+    #
+    # CostEstimationResource schema
+    #
+    CostEstimationResource:
+      type: object
+      required:
+        - processId
+        - input
+        - _links
+      properties:
+        processId:
+          type: string
+          example: 15c61933-0b06-442c-8bab-723b2b41f570
+        prices:
+          type: array
+          items:
+            type: object
+            properties:
+              cost:
+                type: integer
+                example: 123
+              currency:
+                type: string
+                example: areaKm2
+        input:
+          $ref: '#/components/schemas/Input'
+        _links:
+          $ref: '#/components/schemas/JobLinks'
 
     #
     # TaskCountByStatus schema
