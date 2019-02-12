@@ -359,7 +359,7 @@ paths:
       tags:
         - Jobs
       summary: List available jobs
-      description: Return the list of all available jobs for this context from the latest created to the earliest.
+      description: Return the list of all available jobs for the authenticated submitter from the latest created to the earliest.
       parameters:
         - name: processid
           in: query
@@ -432,6 +432,12 @@ paths:
         - name: status
           in: query
           description: Status
+          required: false
+          schema:
+            type: string
+        - name: submitterid
+          in: query
+          description: ID of the job submitter
           required: false
           schema:
             type: string
@@ -1335,6 +1341,10 @@ components:
         id:
           type: string
           example: bb4358f0-30f2-11e8-b467-0ed5f89f718b
+        submitterId:
+          type: string
+          example: user-1234
+
 
 
     #
