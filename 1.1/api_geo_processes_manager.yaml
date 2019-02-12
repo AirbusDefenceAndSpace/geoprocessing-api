@@ -866,6 +866,116 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   #
+  # Job deliveries
+  #
+  '/api/v1/processes/{processId}/jobs/{jobId}/deliveries':
+    get:
+      tags:
+        - Jobs
+      summary: Download a job's output as an archive
+      description: >-
+        Download a job related content.
+      parameters:
+        - name: processId
+          in: path
+          description: ID of task's process
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: jobId
+          in: path
+          description: ID of task's job
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Job's output as an archive archive
+          content:
+            application/x-gzip:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Jobs
+      summary: Delete a job's output
+      description: >-
+        Delete a job's related content.
+      parameters:
+        - name: processId
+          in: path
+          description: ID of task's process
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: jobId
+          in: path
+          description: ID of task's job
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '202':
+          description: Job's output marked for deletion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobSummaryResource'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  #
   # Health informations
   #
   '/api/v1/health':
@@ -1335,6 +1445,10 @@ components:
           type: integer
           format: int64
           example: 1522067883
+        downloadDate:
+          type: integer
+          format: int64
+          example: 1522067883
         processId:
           type: string
           example: 15c61933-0b06-442c-8bab-723b2b41f570
@@ -1751,8 +1865,8 @@ components:
         delete:
           # DELETE ressource to delete this job.
           $ref: '#/components/schemas/Reference'
-        recordsAsGeojson:
-          # Download a GeoJSON file of generated records.
+        download:
+          # Download job's delivery file.
           $ref: '#/components/schemas/Reference'
 
     #
