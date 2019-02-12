@@ -12,7 +12,7 @@ info:
     operating processes.
 
     A job is a unitary execution of a process.
-    
+
     A process may be an unitary processing or a composition of several tasks.
     In the later case, the tasks workflow management can be specific to the process
     or delegated to the process manager which is also specific to the geo process
@@ -25,7 +25,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 1.0.1
   x-logo:
     url: https://www.intelligence-airbusds.com/files/pmedia/public/r2421_9_airbus_rgb.png
 
@@ -69,7 +69,7 @@ paths:
       responses:
         '200':
           description: Process Open API web UI.
-  
+
   #
   # Process list and creation
   #
@@ -192,7 +192,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Process management
   #
@@ -347,7 +347,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Job list for all processes
   #
@@ -370,12 +370,6 @@ paths:
           required: false
           schema:
             type: integer
-        - name: datasetId
-          in: query
-          description: id of a dataset
-          required: false
-          schema:
-            type: string
       responses:
         '200':
           description: successful operation
@@ -401,7 +395,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Job list and creation for one process
   #
@@ -536,7 +530,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Input'
-  
+
   #
   # Job management
   #
@@ -649,7 +643,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Job technical metadata
   #
@@ -705,7 +699,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Job task list
   #
@@ -779,7 +773,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Job task informations
   #
