@@ -118,7 +118,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Processes'
+                $ref: '#/components/schemas/ProcessListResource'
         '400':
           description: Bad request
           content:
@@ -167,7 +167,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProcessDescribe'
+                $ref: '#/components/schemas/ProcessDescribeResource'
         '400':
           description: Bad request
           content:
@@ -216,7 +216,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProcessDescribe'
+                $ref: '#/components/schemas/ProcessDescribeResource'
         '400':
           description: Bad request
           content:
@@ -273,7 +273,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProcessDescribe'
+                $ref: '#/components/schemas/ProcessDescribeResource'
         '400':
           description: Bad request
           content:
@@ -322,7 +322,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProcessSummary'
+                $ref: '#/components/schemas/ProcessSummaryResource'
         '400':
           description: Bad request
           content:
@@ -376,7 +376,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Jobs'
+                $ref: '#/components/schemas/JobListResource'
         '400':
           description: Bad request
           content:
@@ -431,7 +431,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Jobs'
+                $ref: '#/components/schemas/JobListResource'
         '400':
           description: Bad request
           content:
@@ -490,7 +490,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JobDescribe'
+                $ref: '#/components/schemas/JobDescribeResource'
         '400':
           description: Bad request
           content:
@@ -561,7 +561,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JobDescribe'
+                $ref: '#/components/schemas/JobDescribeResource'
         '400':
           description: Bad request
           content:
@@ -612,13 +612,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JobSummary'
+                $ref: '#/components/schemas/JobSummaryResource'
         '204':
           description: Job killed and removed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JobDescribe'
+                $ref: '#/components/schemas/JobDescribeResource'
         '400':
           description: Bad request
           content:
@@ -748,7 +748,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tasks'
+                $ref: '#/components/schemas/TaskListResource'
         '400':
           description: Bad request
           content:
@@ -811,7 +811,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TaskDescribe'
+                $ref: '#/components/schemas/TaskDescribeResource'
         '400':
           description: Bad request
           content:
@@ -857,23 +857,19 @@ components:
   schemas:
 
     #
-    # Processes schema
+    # ProcessListResource schema
     #
-    Processes:
-      type: object
-      properties:
-        processes:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProcessSummary'
-        count:
-          type: integer
-          example: 1
-        total:
-          type: integer
-          example: 1
-        _links:
-          $ref: '#/components/schemas/NavLinks'
+    ProcessListResource:
+      allOf:
+        - $ref: '#/components/schemas/ListResource'
+        - type: object
+          required:
+              - processes
+          properties:
+            processes:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProcessSummaryResource'
 
     #
     # ProcessRef schema
@@ -958,8 +954,19 @@ components:
           example:
             - cat
             - dog
-        _links:
-          $ref: '#/components/schemas/ItemLinks'
+
+    #
+    # ProcessSummaryResource schema
+    #
+    ProcessSummaryResource:
+      allOf:
+        - $ref: '#/components/schemas/ProcessSummary'
+        - type: object
+          required:
+            - _links
+          properties:
+            _links:
+              $ref: '#/components/schemas/ItemLinks'
 
     #
     # ProcessDescribe schema
@@ -967,88 +974,50 @@ components:
     ProcessDescribe:
       description: |
         Process description.
-      type: object
-      required:
-        - id
-        - name
-        - title
-        - family
-        - version
-        - description
-        - organization
-        - email
-        - resources
-        - input
-        - output
-        - asynchronous
-        - _links
-      properties:
-        id:
-          description: Unique identifier of the process (usually an uuid).
-          type: string
-          format: uuid
-          example: 15c61933-0b06-442c-8bab-723b2b41f570
-        name:
-          description: Technical name of the process. May be the Docker image name.
-          type: string
-          example: 'eu.gcr.io/myproject/cat-detection:latest'
-        title:
-          description: The title of the process.
-          type: string
-          example: Cat detection
-        family:
-          description: The process family.
-          type: string
-          example: object-detection
-        version:
-          description: The version of the process.
-          type: string
-          example: 1
-        description:
-          description: Gives a description of the process.
-          type: string
-          example: Detect cats on tiles
-        organization:
-          description: Identifier of the organization or entity publishing the process.
-          type: string
-          example: Airbus DS
-        email:
-          description: Contact email.
-          type: string
-          format: email
-          example: cat-detection@airbus.com
-        keywords:
-          description: List of keywords.
-          type: array
-          items:
-            type: string
-          example:
-            - cat
-            - dog
-        template:
-          description: Template name for predefined interfaces.
-          type: string
-          example: cat-detection
-        resources:
-          description: Hardware resources needed for process execution.
-          $ref: '#/components/schemas/Resources'
-        input:
-          description: Process execution inpout interface (JSON Schema).
-          $ref: '#/components/schemas/InputSchema'
-        output:
-          description: Process execution output interface.
-          $ref: '#/components/schemas/Output'
-        config:
-          description: Process execution configuration interface.
-          type: object
-          format: application/schema+json
-        asynchronous:
-          description: True if asynchronous mode provided.
-          type: boolean
-          default: false
-          example: false
-        _links:
-          $ref: '#/components/schemas/ProcessLinks'
+      allOf:
+        - $ref: '#/components/schemas/ProcessSummary'
+        - type: object
+          required:
+            - resources
+            - input
+            - output
+            - asynchronous
+          properties:
+            template:
+              description: Template name for predefined interfaces.
+              type: string
+              example: cat-detection
+            resources:
+              description: Hardware resources needed for process execution.
+              $ref: '#/components/schemas/Resources'
+            input:
+              description: Process execution inpout interface (JSON Schema).
+              $ref: '#/components/schemas/InputSchema'
+            output:
+              description: Process execution output interface.
+              $ref: '#/components/schemas/Output'
+            config:
+              description: Process execution configuration interface.
+              type: object
+              format: application/schema+json
+            asynchronous:
+              description: True if asynchronous mode provided.
+              type: boolean
+              default: false
+              example: false
+
+    #
+    # ProcessDescribeResource schema
+    #
+    ProcessDescribeResource:
+      allOf:
+        - $ref: '#/components/schemas/ProcessDescribe'
+        - type: object
+          required:
+            - _links
+          properties:
+            _links:
+              $ref: '#/components/schemas/ProcessLinks'
 
     #
     # Resources schema
@@ -1245,118 +1214,116 @@ components:
         tile: dGlsZXRvcHJvY2Vzcw==
 
     #
-    # Jobs schema
+    # JobListResource schema
     #
-    Jobs:
+    JobListResource:
+      allOf:
+        - $ref: '#/components/schemas/ListResource'
+        - type: object
+          required:
+              - jobs
+          properties:
+            jobs:
+              type: array
+              items:
+                $ref: '#/components/schemas/JobSummaryResource'
+
+    #
+    # Job schema
+    #
+    Job:
       type: object
       required:
-        - jobs
-        - _links
+        - processId
+        - id
+        - creationDate
       properties:
-        jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobSummary'
-        count:
+        creationDate:
           type: integer
-          example: 1
-        total:
+          format: int64
+          example: 1522067881
+        startDate:
           type: integer
-          example: 1
-        _links:
-          $ref: '#/components/schemas/NavLinks'
+          format: int64
+          example: 1522067882
+        endDate:
+          type: integer
+          format: int64
+          example: 1522067883
+        processId:
+          type: string
+          example: 15c61933-0b06-442c-8bab-723b2b41f570
+        id:
+          type: string
+          example: bb4358f0-30f2-11e8-b467-0ed5f89f718b
+
 
     #
     # JobSummary schema
     #
     JobSummary:
-      type: object
-      required:
-        - processId
-        - id
-        - creationDate
-      properties:
-        creationDate:
-          type: integer
-          format: int64
-          example: 1522067881
-        startDate:
-          type: integer
-          format: int64
-          example: 1522067882
-        endDate:
-          type: integer
-          format: int64
-          example: 1522067883
-        processId:
-          type: string
-          example: 15c61933-0b06-442c-8bab-723b2b41f570
-        id:
-          type: string
-          example: bb4358f0-30f2-11e8-b467-0ed5f89f718b
-        nbTasks:
-          type: integer
-          example: 4
-        nbTasksPerStatus:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskCountByStatus'
-        _links:
-          $ref: '#/components/schemas/ItemLinks'
+      allOf:
+        - $ref: '#/components/schemas/Job'
+        - type: object
+          properties:
+            nbTasks:
+              type: integer
+              example: 4
+            nbTasksPerStatus:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskCountByStatus'
+
+    #
+    # JobSummaryResource schema
+    #
+    JobSummaryResource:
+      allOf:
+        - $ref: '#/components/schemas/JobSummary'
+        - type: object
+          required:
+            - _links
+          properties:
+            _links:
+              $ref: '#/components/schemas/ItemLinks'
 
     #
     # JobDescribe schema
     #
     JobDescribe:
-      type: object
-      required:
-        - processId
-        - id
-        - creationDate
-        - status
-      properties:
-        creationDate:
-          type: integer
-          format: int64
-          example: 1522067881
-        startDate:
-          type: integer
-          format: int64
-          example: 1522067882
-        endDate:
-          type: integer
-          format: int64
-          example: 1522067883
-        processId:
-          type: string
-          example: 15c61933-0b06-442c-8bab-723b2b41f570
-        id:
-          type: string
-          format: uuid
-          example: bb4358f0-30f2-11e8-b467-0ed5f89f718b
-        status:
-          $ref: '#/components/schemas/Status'
-        message:
-          type: string
-          example: process image 12345
-        nbTasks:
-          type: integer
-          example: 4
-        nbTasksPerStatus:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskCountByStatus'
-        userMetadatas:
-          $ref: '#/components/schemas/Metadatas'
-        input:
-          $ref: '#/components/schemas/Input'
-        asynchronous:
-          description: True if asynchronous mode provided.
-          type: boolean
-          default: false
-          example: false
-        _links:
-          $ref: '#/components/schemas/JobLinks'
+      allOf:
+        - $ref: '#/components/schemas/JobSummary'
+        - type: object
+          required:
+            - status
+          properties:
+            status:
+              $ref: '#/components/schemas/Status'
+            message:
+              type: string
+              example: process image 12345
+            userMetadatas:
+              $ref: '#/components/schemas/Metadatas'
+            input:
+              $ref: '#/components/schemas/Input'
+            asynchronous:
+              description: True if asynchronous mode provided.
+              type: boolean
+              default: false
+              example: false
+
+    #
+    # JobDescribeResource schema
+    #
+    JobDescribeResource:
+      allOf:
+        - $ref: '#/components/schemas/JobDescribe'
+        - type: object
+          required:
+            - _links
+          properties:
+            _links:
+              $ref: '#/components/schemas/JobLinks'
 
     #
     # TaskCountByStatus schema
@@ -1392,31 +1359,60 @@ components:
           type: string
 
     #
-    # Tasks schema
+    # TaskListResource schema
     #
-    Tasks:
-      type: object
-      required:
-        - tasks
-        - _links
-      properties:
-        tasks:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskSummary'
-        count:
-          type: integer
-          example: 1
-        total:
-          type: integer
-          example: 1
-        _links:
-          $ref: '#/components/schemas/NavLinks'
+    TaskListResource:
+      allOf:
+        - $ref: '#/components/schemas/ListResource'
+        - type: object
+          required:
+              - tasks
+          properties:
+            tasks:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskSummaryResource'
 
     #
     # TaskDescribe schema
     #
     TaskDescribe:
+      allOf:
+        - $ref: '#/components/schemas/TaskSummary'
+        - type: object
+          properties:
+            message:
+              type: string
+              example: process tile 234617
+            asynchronous:
+              description: True if asynchronous mode provided.
+              type: boolean
+              default: false
+              example: false
+            userMetadatas:
+              type: array
+              items:
+                type: object
+                additionalProperties:
+                  type: string
+
+    #
+    # TaskDescribeResource schema
+    #
+    TaskDescribeResource:
+      allOf:
+        - $ref: '#/components/schemas/TaskDescribe'
+        - type: object
+          required:
+            - _links
+          properties:
+            _links:
+              $ref: '#/components/schemas/NavLinks'
+
+    #
+    # TaskSummary schema
+    #
+    TaskSummary:
       type: object
       required:
         - processId
@@ -1450,61 +1446,19 @@ components:
           example: d77efb2c-30f3-11e8-b467-0ed5f89f718b
         status:
           $ref: '#/components/schemas/TaskStatus'
-        message:
-          type: string
-          example: process tile 234617
-        asynchronous:
-          description: True if asynchronous mode provided.
-          type: boolean
-          default: false
-          example: false
-        userMetadatas:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              type: string
-        _links:
-          $ref: '#/components/schemas/NavLinks'
 
     #
-    # TaskSummary schema
+    # TaskSummaryResource schema
     #
-    TaskSummary:
-      type: object
-      required:
-        - processId
-        - jobId
-        - id
-        - creationDate
-      properties:
-        creationDate:
-          type: integer
-          format: int64
-          example: 1522067881
-        startDate:
-          type: integer
-          format: int64
-          example: 1522067882
-        endDate:
-          type: integer
-          format: int64
-          example: 1522067883
-        processId:
-          type: string
-          example: 15c61933-0b06-442c-8bab-723b2b41f570
-        jobId:
-          type: string
-          format: uuid
-          example: bb4358f0-30f2-11e8-b467-0ed5f89f718b
-        id:
-          type: string
-          format: uuid
-          example: d77efb2c-30f3-11e8-b467-0ed5f89f718b
-        status:
-          $ref: '#/components/schemas/Status'
-        _links:
-          $ref: '#/components/schemas/NavLinks'
+    TaskSummaryResource:
+      allOf:
+        - $ref: '#/components/schemas/TaskSummary'
+        - type: object
+          required:
+            - _links
+          properties:
+            _links:
+              $ref: '#/components/schemas/NavLinks'
 
     #
     # Status schema
@@ -1593,6 +1547,23 @@ components:
           type: integer
           format: int64
           example: 125
+
+    #
+    # ListResource schema
+    #
+    ListResource:
+      type: object
+      required:
+        - _links
+      properties:
+        count:
+          type: integer
+          example: 1
+        total:
+          type: integer
+          example: 1
+        _links:
+          $ref: '#/components/schemas/NavLinks'
 
     #
     # NavLinks schema
