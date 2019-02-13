@@ -1515,9 +1515,11 @@ components:
           example: 1522067883
         processId:
           type: string
+          format: uuid
           example: 15c61933-0b06-442c-8bab-723b2b41f570
         id:
           type: string
+          format: uuid
           example: bb4358f0-30f2-11e8-b467-0ed5f89f718b
         submitterId:
           type: string
@@ -1604,6 +1606,7 @@ components:
       properties:
         processId:
           type: string
+          format: uuid
           example: 15c61933-0b06-442c-8bab-723b2b41f570
         prices:
           type: array
@@ -1731,6 +1734,7 @@ components:
           example: 1522067883
         processId:
           type: string
+          format: uuid
           example: 15c61933-0b06-442c-8bab-723b2b41f570
         jobId:
           type: string
