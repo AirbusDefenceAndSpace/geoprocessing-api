@@ -25,7 +25,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.1.0-multisat
+  version: 1.1.1-multisat
   x-logo:
     url: https://www.intelligence-airbusds.com/files/pmedia/public/r2421_9_airbus_rgb.png
 
@@ -446,13 +446,13 @@ paths:
           description: Page ID
           required: false
           schema:
-            type: string
+            type: integer
         - name: size
           in: query
           description: Page Size
           required: false
           schema:
-            type: string
+            type: integer
       responses:
         '200':
           description: successful operation
@@ -827,13 +827,13 @@ paths:
           description: Page ID
           required: false
           schema:
-            type: string
+            type: integer
         - name: size
           in: query
           description: Page Size
           required: false
           schema:
-            type: string
+            type: integer
       responses:
         '200':
           description: successful operation
