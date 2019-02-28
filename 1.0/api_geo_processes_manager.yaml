@@ -12,7 +12,7 @@ info:
     operating processes.
 
     A job is a unitary execution of a process.
-    
+
     A process may be an unitary processing or a composition of several tasks.
     In the later case, the tasks workflow management can be specific to the process
     or delegated to the process manager which is also specific to the geo process
@@ -69,7 +69,7 @@ paths:
       responses:
         '200':
           description: Process Open API web UI.
-  
+
   #
   # Process list and creation
   #
@@ -192,7 +192,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Process management
   #
@@ -347,7 +347,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Job list for all processes
   #
@@ -401,7 +401,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Job list and creation for one process
   #
@@ -424,13 +424,13 @@ paths:
           description: Page ID
           required: false
           schema:
-            type: string
+            type: integer
         - name: size
           in: query
           description: Page Size
           required: false
           schema:
-            type: string
+            type: integer
       responses:
         '200':
           description: successful operation
@@ -536,7 +536,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Input'
-  
+
   #
   # Job management
   #
@@ -649,7 +649,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Job technical metadata
   #
@@ -705,7 +705,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Job task list
   #
@@ -741,13 +741,13 @@ paths:
           description: Page ID
           required: false
           schema:
-            type: string
+            type: integer
         - name: size
           in: query
           description: Page Size
           required: false
           schema:
-            type: string
+            type: integer
       responses:
         '200':
           description: successful operation
@@ -779,7 +779,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   #
   # Job task informations
   #
