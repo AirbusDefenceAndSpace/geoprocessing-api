@@ -25,7 +25,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.1.1-multisat
+  version: 1.1.2-multisat
   x-logo:
     url: https://www.intelligence-airbusds.com/files/pmedia/public/r2421_9_airbus_rgb.png
 
@@ -1651,11 +1651,7 @@ components:
     # Metadatas schema
     #
     Metadatas:
-      type: array
-      items:
-        type: object
-        additionalProperties:
-          type: string
+      type: object
 
     #
     # TaskListResource schema
@@ -1689,11 +1685,7 @@ components:
               default: false
               example: false
             userMetadatas:
-              type: array
-              items:
-                type: object
-                additionalProperties:
-                  type: string
+              $ref: '#/components/schemas/Metadatas'
 
     #
     # TaskDescribeResource schema
