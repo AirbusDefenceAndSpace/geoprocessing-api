@@ -370,12 +370,6 @@ paths:
           required: false
           schema:
             type: integer
-        - name: datasetId
-          in: query
-          description: id of a dataset
-          required: false
-          schema:
-            type: string
       responses:
         '200':
           description: successful operation
