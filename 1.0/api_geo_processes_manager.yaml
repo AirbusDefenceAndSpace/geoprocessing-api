@@ -988,13 +988,10 @@ components:
               type: string
               example: cat-detection
             resources:
-              description: Hardware resources needed for process execution.
               $ref: '#/components/schemas/Resources'
             input:
-              description: Process execution inpout interface (JSON Schema).
               $ref: '#/components/schemas/InputSchema'
             output:
-              description: Process execution output interface.
               $ref: '#/components/schemas/Output'
             config:
               description: Process execution configuration interface.
@@ -1576,19 +1573,19 @@ components:
         - self
       properties:
         self:
-          description: Current page reference.
+          # Current page reference.
           $ref: '#/components/schemas/Reference'
         next:
-          description: Next page reference.
+          # Next page reference.
           $ref: '#/components/schemas/Reference'
         prev:
-          description: Previous page reference
+          # Previous page reference
           $ref: '#/components/schemas/Reference'
         first:
-          description: First page reference.
+          # First page reference.
           $ref: '#/components/schemas/Reference'
         last:
-          description: Last page reference
+          # Last page reference
           $ref: '#/components/schemas/Reference'
 
     #
@@ -1602,10 +1599,10 @@ components:
         - self
       properties:
         self:
-          description: Current resource reference.
+          # Current resource reference.
           $ref: '#/components/schemas/Reference'
         list:
-          description: List similar resource references.
+          # List similar resource references.
           $ref: '#/components/schemas/Reference'
 
     #
@@ -1619,22 +1616,22 @@ components:
         - self
       properties:
         self:
-          description: Current resource reference.
+          # Current resource reference.
           $ref: '#/components/schemas/Reference'
         list:
-          description: List similar resource references.
+          # List similar resource references.
           $ref: '#/components/schemas/Reference'
         jobs:
-          description: List of associated jobs.
+          # List of associated jobs.
           $ref: '#/components/schemas/Reference'
         runNewJob:
-          description: POST ressource to launch a job for this process.
+          # POST ressource to launch a job for this process.
           $ref: '#/components/schemas/Reference'
         update:
-          description: PUT ressource to update this process.
+          # PUT ressource to update this process.
           $ref: '#/components/schemas/Reference'
         delete:
-          description: DELETE ressource to delete this process.
+          # DELETE ressource to delete this process.
           $ref: '#/components/schemas/Reference'
 
     #
@@ -1648,22 +1645,22 @@ components:
         - self
       properties:
         self:
-          description: Current resource reference.
+          # Current resource reference.
           $ref: '#/components/schemas/Reference'
         list:
-          description: List similar resource references.
+          # List similar resource references.
           $ref: '#/components/schemas/Reference'
         tasks:
-          description: List of associated tasks.
+          # List of associated tasks.
           $ref: '#/components/schemas/Reference'
         runNewJob:
-          description: POST ressource to launch a new job for this process.
+          # POST ressource to launch a new job for this process.
           $ref: '#/components/schemas/Reference'
         delete:
-          description: DELETE ressource to delete this job.
+          # DELETE ressource to delete this job.
           $ref: '#/components/schemas/Reference'
         recordsAsGeojson:
-          description: Download a GeoJSON file of generated records.
+          # Download a GeoJSON file of generated records.
           $ref: '#/components/schemas/Reference'
 
     #
@@ -1691,9 +1688,7 @@ components:
           type: string
           example: application/json
         method:
-          description: |
-            HTTP verb to distinguish between several possible actions on the
-            same ressource. GET if omitted.
+          # GET if omitted.
           $ref: '#/components/schemas/ReferenceMethod'
 
     #
