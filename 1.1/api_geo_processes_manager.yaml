@@ -25,7 +25,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.1.2-multisat
+  version: 1.1.3-multisat
   x-logo:
     url: https://www.intelligence-airbusds.com/files/pmedia/public/r2421_9_airbus_rgb.png
 
@@ -1698,7 +1698,7 @@ components:
             - _links
           properties:
             _links:
-              $ref: '#/components/schemas/NavLinks'
+              $ref: '#/components/schemas/ItemLinks'
 
     #
     # TaskSummary schema
@@ -1750,7 +1750,7 @@ components:
             - _links
           properties:
             _links:
-              $ref: '#/components/schemas/NavLinks'
+              $ref: '#/components/schemas/ItemLinks'
 
     #
     # Status schema
