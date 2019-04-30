@@ -228,7 +228,7 @@ paths:
       summary: Retrieve execution status
       description: |
         Retrieve the process status and available results if succeded.
-      operationId: get_results
+      operationId: get_status
       responses:
         '200':
           description: Process execution status.
