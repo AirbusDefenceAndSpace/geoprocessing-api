@@ -648,6 +648,11 @@ components:
           type: boolean
           default: false
           example: false
+        batched:
+          description: True if batched mode provided.
+          type: boolean
+          default: false
+          example: false
         _links:
           $ref: '#/components/schemas/Links'
 
@@ -662,27 +667,18 @@ components:
         - cpu
         - ram
       properties:
-        cpu:
-          description: Number of CPU cores.
-          type: integer
-          example: 2
-        cpuArch:
-          description: CPU architecture, the default value is amd64.
+        static_memory:
+          description: Required memory to process a single input.
           type: string
-          enum: [amd64, arm64]
-          example: amd64
-        cpuPlatform:
-          description: Minimum CPU microarchitecture platform.
+          example: "10Mo"
+        dynamic_memory:
+          description: Required memory to process each additional input (when batching is available).
           type: string
-          example: Haswell
-        gpu:
-          description: Number of GPU cores.
+          example: "5Mo"
+        max_batch_size:
+          description: Max batch size.
           type: integer
-          example: 0
-        ram:
-          description: Size of RAM (bytes).
-          type: integer
-          example: 2097152 # 2 Gb
+          example: 10
 
     #
     # Output schema
@@ -719,8 +715,8 @@ components:
             $ref: '#/components/schemas/MediaTypeObject'
           example:
             {
-                "application/geo+json": {},
-                "image/png": {}
+              "application/geo+json": {},
+              "image/png": {}
             }
         links:
           description: |

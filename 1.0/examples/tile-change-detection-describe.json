@@ -9,8 +9,9 @@
     "keywords": "TBC",
     "template": "tile-change-detection",
     "resources": {
-        "cpu": TBC,
-        "ram": TBC
+        "static_memory": "500Mo",
+        "dynamic_memory": "100Mo",
+        "max_batch_size": 10
     },
     "input": {
         "$schema": "http://json-schema.org/draft-06/schema#",
@@ -91,6 +92,7 @@
         }
     },
     "asynchronous": false,
+    "batched": false,
     "_links": {
         "self": {
             "href": "TBC"
