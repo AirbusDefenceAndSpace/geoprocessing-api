@@ -648,6 +648,11 @@ components:
           type: boolean
           default: false
           example: false
+        batched:
+          description: True if batched mode provided.
+          type: boolean
+          default: false
+          example: false
         _links:
           $ref: '#/components/schemas/Links'
 
@@ -683,6 +688,18 @@ components:
           description: Size of RAM (bytes).
           type: integer
           example: 2097152 # 2 Gb
+        static_memory:
+          description: Required memory to process a single input.
+          type: string
+          example: "10MB"
+        dynamic_memory:
+          description: Required memory to process each additional input (when batching is available).
+          type: string
+          example: "5MB"
+        max_batch_size:
+          description: Max batch size.
+          type: integer
+          example: 10
 
     #
     # Output schema
@@ -719,8 +736,8 @@ components:
             $ref: '#/components/schemas/MediaTypeObject'
           example:
             {
-                "application/geo+json": {},
-                "image/png": {}
+              "application/geo+json": {},
+              "image/png": {}
             }
         links:
           description: |

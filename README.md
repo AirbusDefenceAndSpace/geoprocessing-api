@@ -11,9 +11,14 @@
 
 ## Versions
 
-1.0.1
+1.0.2
 
 ## Changelog
+
+
+1.0.2 : Batching support
+ * Support batching
+ * resource usage definition
 
 1.0.1 : Bug fix release
  * Remove sibling values
