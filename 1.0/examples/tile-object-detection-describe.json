@@ -9,8 +9,8 @@
     "keywords": "TBC",
     "template": "tile-object-detection",
     "resources": {
-        "static_memory": "500Mo",
-        "dynamic_memory": "100Mo",
+        "static_memory": "500MB",
+        "dynamic_memory": "100MB",
         "max_batch_size": 10
     },
     "input": {
