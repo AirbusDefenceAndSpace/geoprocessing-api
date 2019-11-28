@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/AirbusDefenceAndSpace/geoprocessing-api/feat/geoprocess-io-refactor/2.0/definitions/image.json",
+  "description": "Image definition for geoprocess-api json schemas",
+  "type": "object",
+  "required": ["image"],
+  "properties": {
+    "image": {
+      "$ref": "#/definitions/imageFile"
+    },
+    "dimensions": {
+      "$ref": "#/definitions/imageDimensions"
+    },
+    "type": {
+      "$ref": "#/definitions/imageType"
+    },
+    "acquisition": {
+      "$ref": "#/definitions/imageAcquisition"
+    },
+    "resolution": {
+      "type": "number"
+    },
+    "ephemeris": {
+      "$ref": "#/definitions/imageEphemeris"
+    },
+    "regionOfInterest": {
+      "$ref": "#/definitions/imageROI"
+    }
+  },
+  "definitions": {
+    "imageFile": {
+      "description": "Image to process (it can be an uri or the raw bytes encoded in base64)",
+      "type": "string"
+    },
+    "imageDimensions": {
+      "description": "Image dimensions",
+      "type": "object",
+      "properties": {
+        "width": { "type": "integer" },
+        "height": { "type": "integer" }
+      }
+    },
+    "imageType": {
+      "description": "Image format description",
+      "type": "object",
+      "properties": {
+        "bitDepth": { "type": "integer" },
+        "bands": { "type": "string" },
+        "format": { "type": "string" },
+        "referenceFormat": { "type": "string" }
+      }
+    },
+    "imageAcquisition": {
+      "description": "Image acquisition context",
+      "type": "object",
+      "properties": {
+        "mission": { "type": "string" },
+        "satellite": { "type": "string" }
+      }
+    },
+    "imageEphemeris": {
+      "description": "Product acquisition ephemeris conditions",
+      "type": "object",
+      "properties": {
+        "incidenceAngle": { "type": "number" },
+        "sunElevation": { "type": "number" },
+        "sunAzimuth": { "type": "number" }
+      }
+    },
+    "imageROI": {
+      "description": "Product region of interest for processing",
+      "type": "object",
+      "required": [
+        "lineOffset",
+        "lineNumber"
+      ],
+      "properties": {
+        "margin": {
+          "type": "number",
+          "description": "Number of lines to include as margin in the processing."
+        },
+        "lineOffset": {
+          "type": "number",
+          "description": "First line to be processed (lines above in the image are ignored by the processing)"
+        },
+        "lineNumber": {
+          "type": "number",
+          "description": "Number of lines to be processed starting from the first line parameter."
+        }
+      }
+    }
+  }
+}

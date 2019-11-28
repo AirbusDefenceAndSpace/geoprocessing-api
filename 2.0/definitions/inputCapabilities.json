@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/AirbusDefenceAndSpace/geoprocessing-api/feat/geoprocess-io-refactor/2.0/definitions/inputCapabilities.json",
+  "title": "Geoprocess engine input capabilities",
+  "description": "JSON Schema to validate a geoprocess input capabilities json description",
+  "type": "object",
+  "required": [ "image" ],
+  "properties": {
+    "image": {
+      "$ref": "imageCapabilities.json"
+    }
+  }
+}

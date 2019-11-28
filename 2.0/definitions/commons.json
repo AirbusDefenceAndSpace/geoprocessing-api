@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/AirbusDefenceAndSpace/geoprocessing-api/feat/geoprocess-io-refactor/2.0/definitions/commons.json",
+  "definitions": {
+    "integerRange": {
+      "description": "Integer range with optimal value.",
+      "type": "object",
+      "properties": {
+        "optimal": { "type": "integer" },
+        "min": { "type": "integer" },
+        "max": { "type": "integer" }
+      }
+    },
+    "numberRange": {
+      "$id": "#numberRange",
+      "description": "Number range with optimal value.",
+      "type": "object",
+      "properties": {
+        "optimal": { "type": "number" },
+        "min": { "type": "number" },
+        "max": { "type": "number" }
+      }
+    }
+  }
+}

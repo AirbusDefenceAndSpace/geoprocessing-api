@@ -1,0 +1,27 @@
+{
+  "images": [
+    {
+      "image": "http://my.wmts.server.com/16/123/456/tile.png",
+      "dimensions": {
+        "width": 256,
+        "height": 256
+      },
+      "type": {
+        "bitDepth": 8,
+        "bands": "P",
+        "format": "PNG",
+        "referenceFormat": "uri"
+      },
+      "acquisition": {
+        "mission": "PHR",
+        "satellite": "PHR-1A"
+      },
+      "resolution": 1.5,
+      "ephemeris": {
+        "incidenceAngle": 4.57,
+        "sunElevation": 46.9,
+        "sunAzimuth": 173.5
+      }
+    }
+  ]
+}

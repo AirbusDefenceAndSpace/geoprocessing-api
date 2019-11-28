@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/AirbusDefenceAndSpace/geoprocessing-api/feat/geoprocess-io-refactor/2.0/definitions/imageCapabilities.json",
+  "description": "Image capabilities for geoprocess",
+  "type": "object",
+  "properties": {
+    "dimensions": {
+      "$ref": "#/definitions/imageDimensionsCapabilities"
+    },
+    "type": {
+      "$ref": "#/definitions/imageTypeCapabilities"
+    },
+    "resolution": {
+      "$ref": "commons.json#numberRange"
+    },
+    "sensor": {
+      "$ref": "#/definitions/imageAcquisitionCapabilities"
+    },
+    "ephemeris": {
+      "$ref": "#/definitions/imageEphemerisCapabilities"
+    },
+    "regionOfInterest": {
+      "$ref": "#/definitions/imageROI"
+    }
+  },
+  "definitions": {
+    "imageDimensionsCapabilities": {
+      "description": "Image supported dimensions",
+      "type": "object",
+      "properties": {
+        "width": {
+          "description": "Image supported width range",
+          "$ref": "commons.json#/definitions/integerRange"
+        },
+        "height": {
+          "description": "Image supported height range",
+          "$ref": "commons.json#/definitions/integerRange"
+        }
+      }
+    },
+    "imageTypeCapabilities": {
+      "description": "Image supported types",
+      "type": "object",
+      "properties": {
+        "bitDepth": {
+          "description": "Image supported bit depth",
+          "type": "array",
+          "items": { "enum": [ 1, 2 , 4, 8, 16, 32, 64 ] },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "bands": {
+          "description": "Image supported bands",
+          "type": "array",
+          "items": { "enum": ["R", "G", "B", "N", "P"] },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "format": {
+          "description": "Image supported format",
+          "type": "array",
+          "items": { "enum": ["tiff", "png", "jpeg", "jp2", "bmp"] },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "referenceFormat": {
+          "description": "Image supported input format",
+          "type": "array",
+          "items": { "enum": ["base64", "uri"] },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "imageAcquisitionCapabilities": {
+      "description": "Product acquisition supported sources",
+      "type": "object",
+      "properties": {
+        "mission": {
+          "type": "array",
+          "items": { "enum": ["PHR", "ASTRO", "SENTINEL"] },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "satellite": {
+          "type": "array",
+          "items": { "enum": ["PHR-1A", "PHR-1B", "SPOT6", "SPOT7", "Sentinel-2"] },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "imageEphemerisCapabilities": {
+      "description": "Product acquisition ephemeris required information",
+      "type": "array",
+      "items": {
+        "enum": ["incidenceAngle", "sunElevation", "sunAzimuth"]
+      },
+      "uniqueItems": true
+    },
+    "imageROI": {
+      "description": "Product region of interest supported for processing",
+      "type": "object",
+      "properties": {
+        "margin": {
+          "$ref": "commons.json#/definitions/integerRange",
+          "description": "Number of lines to include as margin in the processing."
+        },
+        "lineNumber": {
+          "$ref": "commons.json#/definitions/integerRange",
+          "description": "Number of lines to be processed starting from the first line parameter."
+        }
+      }
+    }
+  }
+}

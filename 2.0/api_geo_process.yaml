@@ -561,7 +561,9 @@ components:
         - email
         - resources
         - input
+        - inputCapabilities
         - output
+        - outputCapabilities
         - asynchronous
         - _links
       properties:
@@ -609,36 +611,92 @@ components:
         input:
           description: |
             Process execution input interface.
-            JSON Schema object with ADS metadata extensions.
+            JSON Schema object may use ADS definitions (https://raw.githubusercontent.com/AirbusDefenceAndSpace/geoprocessing-api/feat/geoprocess-io-refactor/2.0/definitions/)
           type: object
           format: application/schema+json
           example:
             {
-              "$schema": "http://json-schema.org/draft-06/schema#",
-              "title": "tile-object-detection-input",
-              "description": "Geo Process API input schema for tile object detection",
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "title": "Geoprocess engine input schema",
               "type": "object",
-              "required": [
-                "zoom",
-                "tile"
-              ],
               "properties": {
-                "zoom": {
-                  "description": "Tile zoom level",
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 20
-                },
-                "tile": {
-                  "description": "The tile image base64 encoded, may be JPEG or PNG format",
-                  "type": "string",
-                  "contentEncoding": "base64"
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "https://raw.githubusercontent.com/AirbusDefenceAndSpace/geoprocessing-api/feat/geoprocess-io-refactor/2.0/definitions/image.json"
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
                 }
               }
             }
+        inputCapabilities:
+          description: |
+            Description of supported input values by Geo Process.
+            This JSON may be compliant with https://raw.githubusercontent.com/AirbusDefenceAndSpace/geoprocessing-api/feat/geoprocess-io-refactor/2.0/definitions/inputCapabilities.json
+          type: object
+          format: application/json
+          example:
+            {
+              "image": {
+                "dimensions": {
+                  "width": {
+                    "min": 64,
+                    "max": 2046,
+                    "optimal": 768
+                  },
+                  "height": {
+                    "min": 64,
+                    "max": 2046,
+                    "optimal": 768
+                  }
+                }
+                "type": {
+                  "bitDepth": [ 8 ],
+                  "bands": "P",
+                  "format": [ "png", "jp2" ],
+                  "referenceFormat": [ "uri" ]
+                },
+                "resolution": {
+                  "min": 0.5,
+                  "max": 2.5,
+                  "optimal": 1.5
+                },
+                "acquisition": {
+                  "mission": [ "PHR", "ASTRO" ],
+                  "satellite": [ "PHR-1A", "PHR-1B", "SPOT6", "SPOT7" ]
+                },
+                "ephemeris": [ "incidenceAngle" ]
+              }
+            }
         output:
-          description: Process execution output interface.
-          $ref: '#/components/schemas/Output'
+          description: |
+            Process execution output interface.
+            JSON Schema object may use ADS definitions (https://raw.githubusercontent.com/AirbusDefenceAndSpace/geoprocessing-api/feat/geoprocess-io-refactor/2.0/definitions/)
+          type: object
+          format: application/schema+json
+          example:
+            {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "title": "Geoprocess engine output schema",
+              "$ref": "https://geojson.org/schema/FeatureCollection.json"
+            }
+        outputCapabilities:
+          description: |
+            Description of supported output values by Geo Process.
+            This JSON may be compliant with https://raw.githubusercontent.com/AirbusDefenceAndSpace/geoprocessing-api/feat/geoprocess-io-refactor/2.0/definitions/outputCapabilities.json
+          type: object
+          format: application/json
+          example:
+            {
+              "geojson": {
+              	"taxonomies": [
+                  {
+                    "reference": "http://taxonomy.catalog.com/cats"
+                  }
+                ]
+              }
+            }
         config:
           description: Process execution configuration interface.
           type: object
@@ -683,93 +741,6 @@ components:
           description: Size of RAM (bytes).
           type: integer
           example: 2097152 # 2 Gb
-
-    #
-    # Output schema
-    #
-    Output:
-      description: |
-        Output interface definition.
-      type: object
-      required:
-        - description
-        - content
-      properties:
-        description:
-          description: A description of the interface.
-          type: string
-          example: Tile object detection output
-        headers:
-          description: |
-            Maps a header name to its definition. RFC7230 states header names
-            are case insensitive. If a response header is defined with
-            the name "Content-Type", it SHALL be ignored.
-          type: object
-        content:
-          description: |
-            A list of all possible contents as a map with key as content type
-            (MIME type) and value as object (json schema) or string (description)
-            for contents that do not need an extra definition (as for image/jpeg
-            or application/geo+json).
-
-            If a content is of type JSON (key as application/json) the value might
-            be a JSON Schema object with ADS metadata extensions.
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/MediaTypeObject'
-          example:
-            {
-                "application/geo+json": {},
-                "image/png": {}
-            }
-        links:
-          description: |
-            A map of operations links that can be followed from the response.
-            The key of the map is a short name for the link, following
-            the naming constraints of the names for Component Objects.
-          type: object
-
-    #
-    # Media Type Object schema
-    #
-    MediaTypeObject:
-      description: |
-        Each Media Type Object provides schema and examples for the media type
-        identified by its key.
-      type: object
-      required:
-        - schema
-      properties:
-        schema:
-          description: The schema defining the type used for the request body.
-          type: object
-        example:
-          description: |
-            Example of the media type. The example object SHOULD be in the correct
-            format as specified by the media type. The example object is mutually
-            exclusive of the examples object. Furthermore, if referencing a schema
-            which contains an example, the example value SHALL override the example
-            provided by the schema.
-          type: object
-        examples:
-          description: |
-            Examples of the media type. Each example object SHOULD match the media
-            type and specified schema if present. The examples object is mutually
-            exclusive of the example object. Furthermore, if referencing a schema
-            which contains an example, the examples value SHALL override the example
-            provided by the schema.
-          type: string
-          additionalProperties:
-            type: object
-        encoding:
-          description: |
-            A map between a property name and its encoding information. The key, being
-            the property name, MUST exist in the schema as a property. The encoding
-            object SHALL only apply to requestBody objects when the media type is multipart
-            or application/x-www-form-urlencoded.
-          type: string
-          additionalProperties:
-            type: string
 
     #
     # Links schema
@@ -895,6 +866,33 @@ components:
         Process input parameters as defined by the JSON Schema in the input
         attribute of the description resource.
       type: object
+      example:
+        {
+          "images": [
+            {
+              "image": "http://my.wmts.server.com/16/123/456/tile.png",
+              "dimensions": {
+                "width": 256,
+                "height": 256
+              },
+              "type": {
+                "bitDepth": 8,
+                "bands": "P",
+                "format": "PNG"
+              },
+              "acquisition": {
+                "mission": "PHR",
+                "satellite": "PHR-1A"
+              },
+              "resolution": 1.5,
+              "ephemeris": {
+                "incidenceAngle": 4.57,
+                "sunElevation": 46.9,
+                "sunAzimuth": 173.5
+              }
+            }
+          ]
+        }
 
     #
     # Reference schema

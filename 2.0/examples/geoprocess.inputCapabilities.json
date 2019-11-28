@@ -1,0 +1,32 @@
+{
+  "image": {
+    "dimensions": {
+      "width": {
+        "min": 64,
+        "max": 2046,
+        "optimal": 768
+      },
+      "height": {
+        "min": 64,
+        "max": 2046,
+        "optimal": 768
+      }
+    },
+    "type": {
+      "bitDepth": [ 8 ],
+      "bands": [ "P" ],
+      "format": [ "png", "jp2" ],
+      "referenceFormat" : [ "uri" ]
+    },
+    "resolution": {
+      "min": 0.5,
+      "max": 2.5,
+      "optimal": 1.5
+    },
+    "acquisition": {
+      "mission": [ "PHR", "ASTRO" ],
+      "satellite": [ "PHR-1A", "PHR-1B", "SPOT6", "SPOT7" ]
+    },
+    "ephemeris": [ "incidenceAngle" ]
+  }
+}
