@@ -197,6 +197,7 @@ paths:
     delete:
       tags:
         - Asynchronous
+        - Optional
       summary: Cancel the given job execution
       operationId: delete_job
       responses:
@@ -225,6 +226,7 @@ paths:
     get:
       tags:
         - Asynchronous
+        - Optional
       summary: Retrieve execution status
       description: |
         Retrieve the process status and available results if succeded.
@@ -263,6 +265,7 @@ paths:
     get:
       tags:
         - Asynchronous
+        - Optional
       summary: Get job results
       description: |
         Retrieve results of the given job.
@@ -281,6 +284,7 @@ paths:
     delete:
       tags:
         - Asynchronous
+        - Optional
       summary: Delete all results
       description: |
         Delete all results.
@@ -321,6 +325,7 @@ paths:
     get:
       tags:
         - Asynchronous
+        - Optional
       summary: Retrieve a result
       description: |
         Retrieve a result from its id.
@@ -339,6 +344,7 @@ paths:
     delete:
       tags:
         - Asynchronous
+        - Optional
       summary: Delete a result
       description: |
         Delete a result from its id.
@@ -356,88 +362,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   #
-  # Instance configuration
-  #
-  /config:
-    servers:
-      - url: '/{customPath}'
-        variables:
-          customPath:
-            default: ''
-    get:
-      tags:
-        - Optional
-      summary: Get instance configuration parameters
-      description: |
-        Implementation specific.
-        Returns the configuration parameters specific to this instance.
-        May be different depending on site, platform or environment deployments.
-      operationId: get_config
-      responses:
-        '200':
-          description: |
-            Configuration parameters as defined by the JSON schema in the
-            _links/config attribute the describe service.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Config'
-        '500':
-          description: Internal error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    put:
-      tags:
-        - Optional
-      summary: Set instance configuration parameters
-      description: |
-        Implementation specific.
-        Set the values of configuration parameters specific to this instance.
-        May be different depending on site, platform or environment deployments.
-      operationId: set_config
-      requestBody:
-        description: |
-          Configuration parameters as defined by the JSON schema in the
-          _links/config attribute the describe service.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Config'
-      responses:
-        '200':
-          description: Configuration parameters.
-        '500':
-          description: Internal error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  #
-  # Instance versions
-  #
-  /version:
-    servers:
-      - url: '/{customPath}'
-        variables:
-          customPath:
-            default: ''
-    get:
-      tags:
-        - Optional
-      summary: Low level version description
-      description: |
-        Implementation specific.
-        Returns build, compiler or version control versions.
-      operationId: version
-      responses:
-        '200':
-          $ref: '#/components/responses/Version'
-
-  #
   # Instance health check
   #
   /health:
@@ -448,7 +372,7 @@ paths:
             default: ''
     get:
       tags:
-        - Optional
+        - Mandatory
       summary: Check if the service is alive
       description: |
         The response is a HTTP status code 200 containing in the body 'OK'.
@@ -456,37 +380,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Success'
-
-  #
-  # Instance metrics
-  #
-  /metrics:
-    servers:
-      - url: '/{customPath}'
-        variables:
-          customPath:
-            default: ''
-    get:
-      tags:
-        - Optional
-      summary: Execution usage metrics
-      description: |
-        Implementation specific.
-        Returns service usage metrics.
-      operationId: metrics
-      responses:
-        '200':
-          description: Service execution metrics.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Metrics'
-        '500':
-          description: Internal error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
 
 #
 # Components
@@ -525,13 +418,6 @@ components:
     NotAvailable:
       description: Service not available.
 
-    Version:
-      description: Version.
-      content:
-        text/plain:
-          schema:
-            type: string
-
     Success:
       description: Success. OK as content.
       content:
@@ -564,6 +450,7 @@ components:
         - inputCapabilities
         - output
         - outputCapabilities
+        - processingUsage
         - asynchronous
         - _links
       properties:
@@ -571,14 +458,6 @@ components:
           description: Technical name of the process. May be the Docker image name.
           type: string
           example: eu.gcr.io/myproject/cat-detection:latest
-        title:
-          description: The title of the process.
-          type: string
-          example: Cat detection
-        family:
-          description: The process family.
-          type: string
-          example: object-detection
         version:
           description: The version of the process.
           type: string
@@ -650,7 +529,7 @@ components:
                     "max": 2046,
                     "optimal": 768
                   }
-                }
+                },
                 "type": {
                   "bitDepth": [ 8 ],
                   "bands": "P",
@@ -706,6 +585,8 @@ components:
           type: boolean
           default: false
           example: false
+        processingUsage:
+          $ref: '#/components/schemas/ProcessingUsage'
         _links:
           $ref: '#/components/schemas/Links'
 
@@ -733,14 +614,18 @@ components:
           description: Minimum CPU microarchitecture platform.
           type: string
           example: Haswell
-        gpu:
-          description: Number of GPU cores.
-          type: integer
-          example: 0
         ram:
           description: Size of RAM (bytes).
           type: integer
           example: 2097152 # 2 Gb
+        gpu:
+          description: Number of GPU cores.
+          type: integer
+          example: 0
+        ram_gpu:
+          description: Size of RAM on GPU (bytes).
+          type: integer
+          example: 11534336 # 11 Gb
 
     #
     # Links schema
@@ -759,19 +644,8 @@ components:
         execution:
           description: The target resource to execute this process.
           $ref: '#/components/schemas/Reference'
-        config:
-          description: The target resource to get / set configuration of this process.
-          $ref: '#/components/schemas/Reference'
-        version:
-          description: |
-            The target resource to get the API version implemented by this
-            process.
-          $ref: '#/components/schemas/Reference'
         health:
           description: The target resource to check health of this process.
-          $ref: '#/components/schemas/Reference'
-        metrics:
-          description: The target resource to get usage metrics of this process.
           $ref: '#/components/schemas/Reference'
         icon:
           description: The target resource to retrieve the icon of this process.
@@ -782,29 +656,6 @@ components:
         documentation:
           description: The target resource to retrieve the documentation of this process.
           $ref: '#/components/schemas/Reference'
-
-    #
-    # Config schema
-    #
-    Config:
-      description: |
-        Process instance configuration.
-
-        Implementation specific.
-
-        Described by the JSON schema in the _links/config attribute of the
-        describe service.
-      type: object
-
-    #
-    # Metrics schema
-    #
-    Metrics:
-      description: |
-        Process metrics.
-
-        Implementation specific.
-      type: object
 
     #
     # Status schema
@@ -893,6 +744,53 @@ components:
             }
           ]
         }
+
+    #
+    # Processing Usage
+    #
+    ProcessingUsage:
+      description: |
+        Instructions required by executors executors.
+      type: object
+      required:
+        - apply_fusion
+      properties:
+        apply_fusion:
+          description: |
+            Defines how the output of the process service is to be fused with the results from the next overlapping tile.
+            If the value is NONE, no fusion is applied. This is the default behavior. If the value is something else than NONE,
+            then it indicates what should be done with the properties of the two fused objects.
+          type: string
+          default: NONE
+          enum:
+            - NONE
+            - SELECT_BASED_ON_CONFIDENCE
+            - SELECT_BASED_ON_AREA
+        tile_size:
+          description: Expected size in pixels of the imagery tile that should be provided to the process service. The optimal value is the prefered size. The min and max parameters indicates the range of size in which the results are considered acceptable. If a strict tile size must be provided, all three numbers should be equals.
+          type: object
+          required:
+            - optimal
+            - min
+            - max
+          properties:
+            optimal:
+              description: Optimal size (in pixel) of the tile to be provided to the process service.
+              type: integer
+              example: 768
+            min:
+              description: Minimal size (in pixel) of the tile to be provided to the process service.
+              type: integer
+              example: 64
+            max:
+              description: Maximal size (in pixel) of the tile to be provided to the process service.
+              type: integer
+              example: 2048
+        overlap_size:
+          description: Expected overlap in pixels between two adjacent tiles of imagery.
+          type: integer
+          example: 10
+          default: 0
 
     #
     # Reference schema
