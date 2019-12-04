@@ -41,9 +41,9 @@ externalDocs:
 # Tags
 #
 tags:
-  - name: Mandatory
+  - name: Common
     description: |
-      Mandatory resources.
+      Common resources.
       Defines the main entry point of the service.
   - name: Synchronous
     description: |
@@ -55,12 +55,6 @@ tags:
       Mandatory resources for the asynchronous mode.
       Endpoints may be specific to each implementation.
       Referenced via the result of the process execution resource.
-  - name: Optional
-    description: |
-      Optional, implementation specific resources for low level
-      description and monitoring.
-      Endpoints may be specific to each implementation.
-      Referenced via the _links attribute of the describe resource.
 
 #
 # Paths
@@ -69,10 +63,10 @@ paths:
   #
   # OpenAPI schema
   #
-  /api/v1/openapi:
+  /api/v2/openapi:
     get:
       tags:
-        - Mandatory
+        - Common
       summary: Open API specification of this service in YAML format
       description: |
         Returns Open API specification of this service in YAML format.
@@ -84,10 +78,10 @@ paths:
   #
   # Describe
   #
-  /api/v1/describe:
+  /api/v2/describe:
     get:
       tags:
-        - Mandatory
+        - Common
       summary: Describes process service
       description: |
         Returns the description of the process.
@@ -355,87 +349,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  #
-  # Instance configuration
-  #
-  /config:
-    servers:
-      - url: '/{customPath}'
-        variables:
-          customPath:
-            default: ''
-    get:
-      tags:
-        - Optional
-      summary: Get instance configuration parameters
-      description: |
-        Implementation specific.
-        Returns the configuration parameters specific to this instance.
-        May be different depending on site, platform or environment deployments.
-      operationId: get_config
-      responses:
-        '200':
-          description: |
-            Configuration parameters as defined by the JSON schema in the
-            _links/config attribute the describe service.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Config'
-        '500':
-          description: Internal error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    put:
-      tags:
-        - Optional
-      summary: Set instance configuration parameters
-      description: |
-        Implementation specific.
-        Set the values of configuration parameters specific to this instance.
-        May be different depending on site, platform or environment deployments.
-      operationId: set_config
-      requestBody:
-        description: |
-          Configuration parameters as defined by the JSON schema in the
-          _links/config attribute the describe service.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Config'
-      responses:
-        '200':
-          description: Configuration parameters.
-        '500':
-          description: Internal error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  #
-  # Instance versions
-  #
-  /version:
-    servers:
-      - url: '/{customPath}'
-        variables:
-          customPath:
-            default: ''
-    get:
-      tags:
-        - Optional
-      summary: Low level version description
-      description: |
-        Implementation specific.
-        Returns build, compiler or version control versions.
-      operationId: version
-      responses:
-        '200':
-          $ref: '#/components/responses/Version'
 
   #
   # Instance health check
@@ -448,7 +361,7 @@ paths:
             default: ''
     get:
       tags:
-        - Optional
+        - Common
       summary: Check if the service is alive
       description: |
         The response is a HTTP status code 200 containing in the body 'OK'.
@@ -456,37 +369,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Success'
-
-  #
-  # Instance metrics
-  #
-  /metrics:
-    servers:
-      - url: '/{customPath}'
-        variables:
-          customPath:
-            default: ''
-    get:
-      tags:
-        - Optional
-      summary: Execution usage metrics
-      description: |
-        Implementation specific.
-        Returns service usage metrics.
-      operationId: metrics
-      responses:
-        '200':
-          description: Service execution metrics.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Metrics'
-        '500':
-          description: Internal error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
 
 #
 # Components
@@ -650,7 +532,7 @@ components:
                     "max": 2046,
                     "optimal": 768
                   }
-                }
+                },
                 "type": {
                   "bitDepth": [ 8 ],
                   "bands": "P",
@@ -759,19 +641,8 @@ components:
         execution:
           description: The target resource to execute this process.
           $ref: '#/components/schemas/Reference'
-        config:
-          description: The target resource to get / set configuration of this process.
-          $ref: '#/components/schemas/Reference'
-        version:
-          description: |
-            The target resource to get the API version implemented by this
-            process.
-          $ref: '#/components/schemas/Reference'
         health:
           description: The target resource to check health of this process.
-          $ref: '#/components/schemas/Reference'
-        metrics:
-          description: The target resource to get usage metrics of this process.
           $ref: '#/components/schemas/Reference'
         icon:
           description: The target resource to retrieve the icon of this process.
@@ -782,29 +653,6 @@ components:
         documentation:
           description: The target resource to retrieve the documentation of this process.
           $ref: '#/components/schemas/Reference'
-
-    #
-    # Config schema
-    #
-    Config:
-      description: |
-        Process instance configuration.
-
-        Implementation specific.
-
-        Described by the JSON schema in the _links/config attribute of the
-        describe service.
-      type: object
-
-    #
-    # Metrics schema
-    #
-    Metrics:
-      description: |
-        Process metrics.
-
-        Implementation specific.
-      type: object
 
     #
     # Status schema
