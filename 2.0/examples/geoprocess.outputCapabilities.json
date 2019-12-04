@@ -1,0 +1,9 @@
+{
+  "geojson": {
+    "taxonomies": [
+      {
+        "reference": "http://taxonomy.catalog.com/cats"
+      }
+    ]
+  }
+}
