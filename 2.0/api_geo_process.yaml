@@ -439,8 +439,6 @@ components:
       type: object
       required:
         - name
-        - title
-        - family
         - version
         - description
         - organization
@@ -451,6 +449,7 @@ components:
         - output
         - outputCapabilities
         - processingUsage
+        - batchSupport
         - asynchronous
         - _links
       properties:
@@ -580,6 +579,10 @@ components:
           description: Process execution configuration interface.
           type: object
           format: application/schema+json
+        batchSupport:
+          description: True if the service support batched inputs
+          type: boolean
+          example: true
         asynchronous:
           description: True if asynchronous mode provided.
           type: boolean
