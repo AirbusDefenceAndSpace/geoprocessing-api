@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/AirbusDefenceAndSpace/geoprocessing-api/feat/geoprocess-io-refactor/2.0/definitions/processingUsage.json",
+  "description": "Processing Usage definition for geoprocess-api json schemas",
+  "type": "object",
+  "required": ["applyFusion"],
+  "properties": {
+    "applyFusion": {
+      "description": "Defines how the output of the process service is to be fused with the results from the next overlapping tile. If the value is NONE, no fusion is applied. This is the default behavior. If the value is something else than NONE, then it indicates what should be done with the properties of the two fused objects.",
+      "type": "string"
+    },
+    "tileSize": {
+      "description": "Expected size in pixels of the imagery tile that should be provided to the process service. The optimal value is the prefered size. The min and max parameters indicates the range of size in which the results are considered acceptable. If a strict tile size must be provided, all three numbers should be equals.",
+      "$ref": "commons.json#/definitions/integerRange"
+    },
+    "overlapSize": {
+      "description": "Expected overlap in pixels between two adjacent tiles of imagery.",
+      "type": "integer"
+    }
+  }
+}

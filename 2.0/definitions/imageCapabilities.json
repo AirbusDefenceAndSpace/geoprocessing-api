@@ -11,6 +11,7 @@
       "$ref": "#/definitions/imageTypeCapabilities"
     },
     "resolution": {
+      "description": "ground sample distance in centimeter per pixel",
       "$ref": "commons.json#numberRange"
     },
     "sensor": {
@@ -29,11 +30,11 @@
       "type": "object",
       "properties": {
         "width": {
-          "description": "Image supported width range",
+          "description": "Image supported width range in pixel",
           "$ref": "commons.json#/definitions/integerRange"
         },
         "height": {
-          "description": "Image supported height range",
+          "description": "Image supported height range in pixel",
           "$ref": "commons.json#/definitions/integerRange"
         }
       }
@@ -109,6 +110,10 @@
         "lineNumber": {
           "$ref": "commons.json#/definitions/integerRange",
           "description": "Number of lines to be processed starting from the first line parameter."
+        },
+        "columnNumber": {
+          "$ref": "commons.json#/definitions/integerRange",
+          "description": "Number of columns to be processed starting from the first column parameter."
         }
       }
     }

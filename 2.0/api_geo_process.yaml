@@ -150,7 +150,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProcessInput'
+              $ref: '#/components/schemas/ProcessInputList'
       responses:
         '200':
           description: Success.
@@ -158,7 +158,7 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/responses/OutputResponse'
+                  - $ref: '#/components/schemas/OutputResponseList'
                   - $ref: '#/components/schemas/Reference'
         '400':
           $ref: '#/components/responses/InvalidInput'
@@ -332,7 +332,7 @@ paths:
       operationId: get_result
       responses:
         '200':
-          $ref: '#/components/responses/OutputResponse'
+          $ref: '#/components/schemas/OutputResponseList'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -448,7 +448,6 @@ components:
         - inputCapabilities
         - output
         - outputCapabilities
-        - processingUsage
         - batchSupport
         - asynchronous
         - _links
@@ -588,8 +587,6 @@ components:
           type: boolean
           default: false
           example: false
-        processingUsage:
-          $ref: '#/components/schemas/ProcessingUsage'
         _links:
           $ref: '#/components/schemas/Links'
 
@@ -749,51 +746,24 @@ components:
         }
 
     #
-    # Processing Usage
+    # ProcessInputList schema
     #
-    ProcessingUsage:
+    ProcessInputList:
       description: |
-        Instructions required by executors executors.
-      type: object
-      required:
-        - apply_fusion
-      properties:
-        apply_fusion:
-          description: |
-            Defines how the output of the process service is to be fused with the results from the next overlapping tile.
-            If the value is NONE, no fusion is applied. This is the default behavior. If the value is something else than NONE,
-            then it indicates what should be done with the properties of the two fused objects.
-          type: string
-          default: NONE
-          enum:
-            - NONE
-            - SELECT_BASED_ON_CONFIDENCE
-            - SELECT_BASED_ON_AREA
-        tile_size:
-          description: Expected size in pixels of the imagery tile that should be provided to the process service. The optimal value is the prefered size. The min and max parameters indicates the range of size in which the results are considered acceptable. If a strict tile size must be provided, all three numbers should be equals.
-          type: object
-          required:
-            - optimal
-            - min
-            - max
-          properties:
-            optimal:
-              description: Optimal size (in pixel) of the tile to be provided to the process service.
-              type: integer
-              example: 768
-            min:
-              description: Minimal size (in pixel) of the tile to be provided to the process service.
-              type: integer
-              example: 64
-            max:
-              description: Maximal size (in pixel) of the tile to be provided to the process service.
-              type: integer
-              example: 2048
-        overlap_size:
-          description: Expected overlap in pixels between two adjacent tiles of imagery.
-          type: integer
-          example: 10
-          default: 0
+        A list of ProcessInput.
+      type: array
+      items:
+        $ref: '#/components/schemas/ProcessInput'
+
+    #
+    # OutputResponseList schema
+    #
+    OutputResponseList:
+      description: |
+        A list of OutputResponse.
+      type: array
+      items:
+        $ref: '#/components/responses/OutputResponse'
 
     #
     # Reference schema

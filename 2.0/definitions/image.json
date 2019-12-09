@@ -33,7 +33,7 @@
       "type": "string"
     },
     "imageDimensions": {
-      "description": "Image dimensions",
+      "description": "Image dimensions in pixel",
       "type": "object",
       "properties": {
         "width": { "type": "integer" },
@@ -59,7 +59,7 @@
       }
     },
     "imageEphemeris": {
-      "description": "Product acquisition ephemeris conditions",
+      "description": "Product acquisition ephemeris conditions in radian",
       "type": "object",
       "properties": {
         "incidenceAngle": { "type": "number" },
@@ -72,7 +72,9 @@
       "type": "object",
       "required": [
         "lineOffset",
-        "lineNumber"
+        "lineNumber",
+        "columnOffset",
+        "columnNumber"
       ],
       "properties": {
         "margin": {
@@ -86,6 +88,14 @@
         "lineNumber": {
           "type": "number",
           "description": "Number of lines to be processed starting from the first line parameter."
+        },
+        "columnOffset": {
+          "type": "number",
+          "description": "First column to be processed (columns on the left in the image are ignored by the processing)"
+        },
+        "columnNumber": {
+          "type": "number",
+          "description": "Number of columns to be processed starting from the first column parameter."
         }
       }
     }

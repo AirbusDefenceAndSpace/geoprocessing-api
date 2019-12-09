@@ -1,0 +1,8 @@
+{
+    "applyFusion": "SELECT_BASED_ON_AREA",
+    "tileSize": {
+        "optimal": 1024,
+        "min": 512,
+        "max": 2048
+    }
+}
