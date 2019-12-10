@@ -12,9 +12,9 @@ info:
     The default execution mode for Geo Process Services is synchronous.
     An optional asynchronous mode for long running processes and process that returns huge amount of data may be implemented.
 
-    This API provides two endpoints with a fixed path /api/v1/openapi and /api/v1/describe.
-    The path prefix for the others endpoints are implementation specific, for example the /jobs endpoint could be implemented at /jobs or /mypath/jobs or /api/v1/jobs.
-    As been the only fixed endpoint with implementation specific data, /api/v1/describe contains the _links attribute that has to reference all implemented endpoints for the service.
+    This API provides two endpoints with a fixed path /api/v2/openapi and /api/v2/describe.
+    The path prefix for the others endpoints are implementation specific, for example the /jobs endpoint could be implemented at /jobs or /mypath/jobs or /api/v2/jobs.
+    As been the only fixed endpoint with implementation specific data, /api/v2/describe contains the _links attribute that has to reference all implemented endpoints for the service.
     With this main service entry and the provided links it is possible for a client to discover and address others endpoints of the service.
 
     OneAtlas Playground is an evaluation environment to test Geo Process on OneAtlas imagery from Airbus and Partners.
@@ -67,9 +67,39 @@ tags:
 #
 paths:
   #
+  # Supported versions
+  #
+  /api/versions:
+    get:
+      tags:
+        - Mandatory
+      summary: Returns the supported API versions
+      description: |
+        Returns the supported API versions.
+      operationId: versions
+      responses:
+        '200':
+          description: Supported API versions.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  {
+                    "v1": "/api/v1/describe",
+                    "v2": "/api/v2/describe",
+                  }
+        '500':
+          description: Internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  #
   # OpenAPI schema
   #
-  /api/v1/openapi:
+  /api/v2/openapi:
     get:
       tags:
         - Mandatory
@@ -84,7 +114,7 @@ paths:
   #
   # Describe
   #
-  /api/v1/describe:
+  /api/v2/describe:
     get:
       tags:
         - Mandatory
@@ -782,7 +812,7 @@ components:
           description: Determine the target URI of the related resource.
           type: string
           format: uri
-          example: http://myservice.com/api/v1/describe
+          example: http://myservice.com/api/v2/describe
         type:
           description: Expected content type of the response of the reference.
           type: string
